@@ -58,7 +58,7 @@ export default function Index() {
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">10K</p>
-                      <p className="text-xs text-muted-foreground">Abonnés</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnés</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
