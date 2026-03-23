@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, User, CheckCircle2, ArrowLeft, Heart, MessageCircle, UserCheck, XCircle, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { getUsers, getStats, type UserProfile } from '@/lib/store';
+import { getUsers, getStats, type UserProfile, type ProfileStats } from '@/lib/store';
 
 export default function Index() {
   const navigate = useNavigate();
@@ -10,10 +10,14 @@ export default function Index() {
   const [isFocused, setIsFocused] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [users, setUsers] = useState<UserProfile[]>([]);
-  const stats = getStats();
+  const [stats, setStats] = useState<ProfileStats>({ abonnements: '26', abonnes: '10K', jaime: '32.5K' });
 
   useEffect(() => {
-    setUsers(getUsers());
+    (async () => {
+      const [u, s] = await Promise.all([getUsers(), getStats()]);
+      setUsers(u);
+      setStats(s);
+    })();
   }, []);
 
   const searchResults = users.filter(user =>
@@ -35,7 +39,6 @@ export default function Index() {
                 transition={{ duration: 0.2 }}
               >
                 <div className="p-6 pb-4 flex flex-col items-center text-center relative">
-                  {/* Admin button */}
                   <button
                     onClick={() => navigate('/admin')}
                     className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full hover:bg-secondary transition-colors"
@@ -56,7 +59,6 @@ export default function Index() {
                   <h1 className="text-xl font-bold text-foreground">Michel Samah</h1>
                   <p className="text-sm text-muted-foreground">@roomtok7</p>
 
-                  {/* Stats */}
                   <div className="flex items-center gap-4 mt-4 text-center">
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">{stats.abonnements}</p>
@@ -77,13 +79,11 @@ export default function Index() {
 
                 <div className="px-6 pb-6">
                   <div className="w-full h-px bg-border mb-5" />
-
                   <div className="mb-4">
                     <h2 className="text-base font-semibold text-foreground">Vérificateur d'interaction</h2>
                     <p className="text-sm text-muted-foreground mt-0.5">Recherchez un utilisateur pour vérifier son activité.</p>
                   </div>
 
-                  {/* Search */}
                   <div className="relative">
                     <div className="absolute left-3.5 top-1/2 -translate-y-1/2">
                       <Search className={`w-4 h-4 transition-colors duration-200 ${isFocused ? 'text-foreground' : 'text-muted-foreground'}`} />
@@ -99,7 +99,6 @@ export default function Index() {
                     />
                   </div>
 
-                  {/* Results */}
                   <AnimatePresence>
                     {searchQuery && (
                       <motion.div
@@ -112,14 +111,11 @@ export default function Index() {
                           searchResults.map((user) => (
                             <div
                               key={user.id}
-                              onClick={() => {
-                                setSelectedUser(user);
-                                setSearchQuery('');
-                              }}
+                              onClick={() => { setSelectedUser(user); setSearchQuery(''); }}
                               className="flex items-center gap-3 p-2.5 hover:bg-secondary rounded-xl cursor-pointer transition-colors"
                             >
-                              {user.photoUrl ? (
-                                <img src={user.photoUrl} alt={user.name} className="w-9 h-9 rounded-full object-cover" />
+                              {user.photo_url ? (
+                                <img src={user.photo_url} alt={user.name} className="w-9 h-9 rounded-full object-cover" />
                               ) : (
                                 <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
                                   <User className="w-4 h-4 text-muted-foreground" />
@@ -154,18 +150,15 @@ export default function Index() {
                 className="p-6"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <button
-                    onClick={() => setSelectedUser(null)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary transition-colors"
-                  >
+                  <button onClick={() => setSelectedUser(null)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
                     <ArrowLeft className="w-5 h-5 text-foreground" />
                   </button>
                   <h2 className="text-lg font-semibold text-foreground">Rapport d'interaction</h2>
                 </div>
 
                 <div className="flex flex-col items-center text-center mb-8">
-                  {selectedUser.photoUrl ? (
-                    <img src={selectedUser.photoUrl} alt={selectedUser.name} className="w-20 h-20 rounded-full object-cover mb-3" />
+                  {selectedUser.photo_url ? (
+                    <img src={selectedUser.photo_url} alt={selectedUser.name} className="w-20 h-20 rounded-full object-cover mb-3" />
                   ) : (
                     <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-3">
                       <User className="w-10 h-10 text-muted-foreground" />
@@ -190,7 +183,7 @@ export default function Index() {
                           <p className="text-xs text-muted-foreground">Suit @roomtok7</p>
                         </div>
                       </div>
-                      {selectedUser.isSubscribed ? (
+                      {selectedUser.is_subscribed ? (
                         <CheckCircle2 className="w-6 h-6 text-success" />
                       ) : (
                         <XCircle className="w-6 h-6 text-destructive" />
@@ -207,7 +200,7 @@ export default function Index() {
                           <p className="text-xs text-muted-foreground">A liké la dernière vidéo</p>
                         </div>
                       </div>
-                      {selectedUser.hasLiked ? (
+                      {selectedUser.has_liked ? (
                         <CheckCircle2 className="w-6 h-6 text-success" />
                       ) : (
                         <XCircle className="w-6 h-6 text-destructive" />
@@ -224,7 +217,7 @@ export default function Index() {
                           <p className="text-xs text-muted-foreground">A commenté la vidéo</p>
                         </div>
                       </div>
-                      {selectedUser.hasCommented ? (
+                      {selectedUser.has_commented ? (
                         <CheckCircle2 className="w-6 h-6 text-success" />
                       ) : (
                         <XCircle className="w-6 h-6 text-destructive" />

@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profile_stats: {
+        Row: {
+          abonnements: string
+          abonnes: string
+          id: number
+          jaime: string
+        }
+        Insert: {
+          abonnements?: string
+          abonnes?: string
+          id?: never
+          jaime?: string
+        }
+        Update: {
+          abonnements?: string
+          abonnes?: string
+          id?: never
+          jaime?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          has_commented: boolean
+          has_liked: boolean
+          id: number
+          is_subscribed: boolean
+          name: string
+          photo_url: string
+          username: string
+          verified: boolean
+        }
+        Insert: {
+          created_at?: string
+          has_commented?: boolean
+          has_liked?: boolean
+          id?: never
+          is_subscribed?: boolean
+          name?: string
+          photo_url?: string
+          username: string
+          verified?: boolean
+        }
+        Update: {
+          created_at?: string
+          has_commented?: boolean
+          has_liked?: boolean
+          id?: never
+          is_subscribed?: boolean
+          name?: string
+          photo_url?: string
+          username?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
