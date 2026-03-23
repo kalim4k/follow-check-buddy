@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Plus, Trash2, Save, User } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ArrowLeft, Plus, Trash2, Save, User, Upload, Image } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getUsers, saveUsers, getStats, saveStats, type UserProfile, type ProfileStats } from '@/lib/store';
 
