@@ -63,7 +63,7 @@ export default function Index() {
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">32.5K</p>
-                      <p className="text-xs text-muted-foreground">J'aime</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">J'aime</p>
                     </div>
                   </div>
                 </div>
