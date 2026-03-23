@@ -23,7 +23,7 @@ export default function Index() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex items-start justify-center p-4 pt-8">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <motion.div layout className="bg-card rounded-3xl shadow-sm border border-border overflow-hidden">
           <AnimatePresence mode="wait">
