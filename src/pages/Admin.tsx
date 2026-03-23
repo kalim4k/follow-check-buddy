@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Plus, Trash2, Save, User } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ArrowLeft, Plus, Trash2, Save, User, Upload, Image } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getUsers, saveUsers, getStats, saveStats, type UserProfile, type ProfileStats } from '@/lib/store';
 
@@ -8,6 +8,18 @@ export default function Admin() {
   const [stats, setStats] = useState<ProfileStats>(getStats());
   const [users, setUsers] = useState<UserProfile[]>(getUsers());
   const [saved, setSaved] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewPhoto(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   // New user form
   const [newUsername, setNewUsername] = useState('');
@@ -136,12 +148,28 @@ export default function Admin() {
                 className="w-full bg-secondary border border-border rounded-xl py-2.5 px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/5 focus:border-foreground transition-all"
               />
             </div>
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full bg-secondary border border-border border-dashed rounded-xl py-4 px-3 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-muted transition-colors"
+            >
+              {newPhoto ? (
+                <div className="flex items-center gap-3">
+                  <img src={newPhoto} alt="Preview" className="w-10 h-10 rounded-full object-cover" />
+                  <span className="text-sm text-foreground">Photo sélectionnée</span>
+                </div>
+              ) : (
+                <>
+                  <Upload className="w-5 h-5 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Importer une photo de profil</span>
+                </>
+              )}
+            </div>
             <input
-              type="text"
-              value={newPhoto}
-              onChange={e => setNewPhoto(e.target.value)}
-              placeholder="URL de la photo de profil"
-              className="w-full bg-secondary border border-border rounded-xl py-2.5 px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/5 focus:border-foreground transition-all"
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileSelect}
             />
             <div className="flex flex-wrap gap-3">
               {[
