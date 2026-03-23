@@ -1,23 +1,22 @@
-import { useState } from 'react';
-import { Search, User, CheckCircle2, ArrowLeft, Heart, MessageCircle, UserCheck, XCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, User, CheckCircle2, ArrowLeft, Heart, MessageCircle, UserCheck, XCircle, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
-const MOCK_USERS = [
-  { id: 1, username: 'alex_dev', name: 'Alexandre', verified: false, isSubscribed: true, hasLiked: false, hasCommented: true },
-  { id: 2, username: 'marie.design', name: 'Marie UX', verified: true, isSubscribed: true, hasLiked: true, hasCommented: false },
-  { id: 3, username: 'lucas_99', name: 'Lucas', verified: false, isSubscribed: false, hasLiked: false, hasCommented: false },
-  { id: 4, username: 'sophie_art', name: 'Sophie', verified: false, isSubscribed: true, hasLiked: true, hasCommented: true },
-  { id: 5, username: 'thomas.code', name: 'Thomas', verified: true, isSubscribed: false, hasLiked: true, hasCommented: false },
-];
-
-type MockUser = typeof MOCK_USERS[number];
+import { useNavigate } from 'react-router-dom';
+import { getUsers, getStats, type UserProfile } from '@/lib/store';
 
 export default function Index() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<MockUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const stats = getStats();
 
-  const searchResults = MOCK_USERS.filter(user =>
+  useEffect(() => {
+    setUsers(getUsers());
+  }, []);
+
+  const searchResults = users.filter(user =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -35,7 +34,15 @@ export default function Index() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="p-6 pb-4 flex flex-col items-center text-center">
+                <div className="p-6 pb-4 flex flex-col items-center text-center relative">
+                  {/* Admin button */}
+                  <button
+                    onClick={() => navigate('/admin')}
+                    className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full hover:bg-secondary transition-colors"
+                  >
+                    <Settings className="w-4 h-4 text-muted-foreground" />
+                  </button>
+
                   <div className="relative mb-3">
                     <img
                       src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/9ce85a0a-900a-4f90-aa08-2f38c38d280d.jpg"
@@ -52,17 +59,17 @@ export default function Index() {
                   {/* Stats */}
                   <div className="flex items-center gap-4 mt-4 text-center">
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">26</p>
+                      <p className="font-semibold text-foreground">{stats.abonnements}</p>
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnements</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">10K</p>
+                      <p className="font-semibold text-foreground">{stats.abonnes}</p>
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnés</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">32.5K</p>
+                      <p className="font-semibold text-foreground">{stats.jaime}</p>
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">J'aime</p>
                     </div>
                   </div>
@@ -111,9 +118,13 @@ export default function Index() {
                               }}
                               className="flex items-center gap-3 p-2.5 hover:bg-secondary rounded-xl cursor-pointer transition-colors"
                             >
-                              <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
-                                <User className="w-4 h-4 text-muted-foreground" />
-                              </div>
+                              {user.photoUrl ? (
+                                <img src={user.photoUrl} alt={user.name} className="w-9 h-9 rounded-full object-cover" />
+                              ) : (
+                                <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
+                                  <User className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              )}
                               <div>
                                 <div className="flex items-center gap-1.5">
                                   <span className="text-sm font-medium text-foreground">{user.username}</span>
@@ -142,7 +153,6 @@ export default function Index() {
                 transition={{ duration: 0.2 }}
                 className="p-6"
               >
-                {/* Header */}
                 <div className="flex items-center gap-3 mb-6">
                   <button
                     onClick={() => setSelectedUser(null)}
@@ -153,11 +163,14 @@ export default function Index() {
                   <h2 className="text-lg font-semibold text-foreground">Rapport d'interaction</h2>
                 </div>
 
-                {/* User Profile */}
                 <div className="flex flex-col items-center text-center mb-8">
-                  <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-3">
-                    <User className="w-10 h-10 text-muted-foreground" />
-                  </div>
+                  {selectedUser.photoUrl ? (
+                    <img src={selectedUser.photoUrl} alt={selectedUser.name} className="w-20 h-20 rounded-full object-cover mb-3" />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-3">
+                      <User className="w-10 h-10 text-muted-foreground" />
+                    </div>
+                  )}
                   <div className="flex items-center gap-1.5">
                     <h3 className="text-lg font-semibold text-foreground">{selectedUser.username}</h3>
                     {selectedUser.verified && <CheckCircle2 className="w-4 h-4 text-foreground" />}
@@ -165,10 +178,8 @@ export default function Index() {
                   <p className="text-sm text-muted-foreground">{selectedUser.name}</p>
                 </div>
 
-                {/* Interaction Checklist */}
                 <div className="bg-secondary rounded-2xl p-4">
                   <div className="space-y-3">
-                    {/* Subscription */}
                     <div className="flex items-center justify-between p-3 bg-card rounded-xl">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
@@ -186,7 +197,6 @@ export default function Index() {
                       )}
                     </div>
 
-                    {/* Like */}
                     <div className="flex items-center justify-between p-3 bg-card rounded-xl">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
@@ -204,7 +214,6 @@ export default function Index() {
                       )}
                     </div>
 
-                    {/* Comment */}
                     <div className="flex items-center justify-between p-3 bg-card rounded-xl">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
