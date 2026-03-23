@@ -1,59 +1,109 @@
+import { supabase } from '@/integrations/supabase/client';
+
 export interface UserProfile {
   id: number;
   username: string;
   name: string;
-  photoUrl: string;
+  photo_url: string;
   verified: boolean;
-  isSubscribed: boolean;
-  hasLiked: boolean;
-  hasCommented: boolean;
+  is_subscribed: boolean;
+  has_liked: boolean;
+  has_commented: boolean;
 }
 
 export interface ProfileStats {
+  id?: number;
   abonnements: string;
   abonnes: string;
   jaime: string;
 }
 
-const DEFAULT_USERS: UserProfile[] = [
-  { id: 1, username: 'alex_dev', name: 'Alexandre', photoUrl: '', verified: false, isSubscribed: true, hasLiked: false, hasCommented: true },
-  { id: 2, username: 'marie.design', name: 'Marie UX', photoUrl: '', verified: true, isSubscribed: true, hasLiked: true, hasCommented: false },
-  { id: 3, username: 'lucas_99', name: 'Lucas', photoUrl: '', verified: false, isSubscribed: false, hasLiked: false, hasCommented: false },
-  { id: 4, username: 'sophie_art', name: 'Sophie', photoUrl: '', verified: false, isSubscribed: true, hasLiked: true, hasCommented: true },
-  { id: 5, username: 'thomas.code', name: 'Thomas', photoUrl: '', verified: true, isSubscribed: false, hasLiked: true, hasCommented: false },
-];
+// ---- Profiles ----
 
-const DEFAULT_STATS: ProfileStats = {
-  abonnements: '26',
-  abonnes: '10K',
-  jaime: '32.5K',
-};
+export async function getUsers(): Promise<UserProfile[]> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .order('created_at', { ascending: true });
+  if (error) {
+    console.error('Error fetching profiles:', error);
+    return [];
+  }
+  return data ?? [];
+}
 
-const USERS_KEY = 'roomtok_users';
-const STATS_KEY = 'roomtok_stats';
+export async function addUser(user: Omit<UserProfile, 'id'>): Promise<UserProfile | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .insert(user)
+    .select()
+    .single();
+  if (error) {
+    console.error('Error adding profile:', error);
+    return null;
+  }
+  return data;
+}
 
-export function getUsers(): UserProfile[] {
-  try {
-    const data = localStorage.getItem(USERS_KEY);
-    return data ? JSON.parse(data) : DEFAULT_USERS;
-  } catch {
-    return DEFAULT_USERS;
+export async function updateUser(id: number, fields: Partial<UserProfile>): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .update(fields)
+    .eq('id', id);
+  if (error) console.error('Error updating profile:', error);
+}
+
+export async function removeUser(id: number): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .delete()
+    .eq('id', id);
+  if (error) console.error('Error deleting profile:', error);
+}
+
+// ---- Stats ----
+
+export async function getStats(): Promise<ProfileStats> {
+  const { data, error } = await supabase
+    .from('profile_stats')
+    .select('*')
+    .limit(1)
+    .single();
+  if (error || !data) {
+    return { abonnements: '26', abonnes: '10K', jaime: '32.5K' };
+  }
+  return data;
+}
+
+export async function saveStats(stats: Omit<ProfileStats, 'id'>): Promise<void> {
+  // Get the first row id
+  const { data } = await supabase
+    .from('profile_stats')
+    .select('id')
+    .limit(1)
+    .single();
+  if (data) {
+    await supabase
+      .from('profile_stats')
+      .update(stats)
+      .eq('id', data.id);
   }
 }
 
-export function saveUsers(users: UserProfile[]) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
+// ---- Photo upload ----
 
-export function getStats(): ProfileStats {
-  try {
-    const data = localStorage.getItem(STATS_KEY);
-    return data ? JSON.parse(data) : DEFAULT_STATS;
-  } catch {
-    return DEFAULT_STATS;
+export async function uploadProfilePhoto(file: File): Promise<string | null> {
+  const ext = file.name.split('.').pop();
+  const fileName = `${Date.now()}.${ext}`;
+  const { error } = await supabase.storage
+    .from('profile-photos')
+    .upload(fileName, file);
+  if (error) {
+    console.error('Error uploading photo:', error);
+    return null;
   }
-}
-
-export function saveStats(stats: ProfileStats) {
-  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  const { data: urlData } = supabase.storage
+    .from('profile-photos')
+    .getPublicUrl(fileName);
+  return urlData.publicUrl;
 }
