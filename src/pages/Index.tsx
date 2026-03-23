@@ -35,14 +35,15 @@ export default function Index() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                {/* Profile Header */}
-                <div className="p-6 pb-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-foreground to-muted-foreground flex items-center justify-center">
-                      <User className="w-8 h-8 text-primary-foreground" />
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center ml-auto">
-                      <CheckCircle2 className="w-5 h-5 text-muted-foreground" />
+                <div className="p-6 pb-4 flex flex-col items-center text-center">
+                  <div className="relative mb-3">
+                    <img
+                      src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/9ce85a0a-900a-4f90-aa08-2f38c38d280d.jpg"
+                      alt="Michel Samah"
+                      className="w-24 h-24 rounded-full object-cover"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-foreground flex items-center justify-center border-2 border-card">
+                      <CheckCircle2 className="w-4 h-4 text-primary-foreground" />
                     </div>
                   </div>
                   <h1 className="text-xl font-bold text-foreground">Michel Samah</h1>
