@@ -8,6 +8,18 @@ export default function Admin() {
   const [stats, setStats] = useState<ProfileStats>(getStats());
   const [users, setUsers] = useState<UserProfile[]>(getUsers());
   const [saved, setSaved] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewPhoto(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   // New user form
   const [newUsername, setNewUsername] = useState('');
