@@ -45,7 +45,7 @@ export async function addUser(user: Omit<UserProfile, 'id'>): Promise<UserProfil
   return data;
 }
 
-export async function updateUser(id: number, fields: Partial<UserProfile>): Promise<void> {
+export async function updateUser(id: number, fields: Partial<Omit<UserProfile, 'id'>>): Promise<void> {
   const { error } = await supabase
     .from('profiles')
     .update(fields)
