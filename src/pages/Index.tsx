@@ -53,7 +53,7 @@ export default function Index() {
                   <div className="flex items-center gap-4 mt-4 text-center">
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">26</p>
-                      <p className="text-xs text-muted-foreground">Abonnements</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnements</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
