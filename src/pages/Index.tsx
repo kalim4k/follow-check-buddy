@@ -23,7 +23,7 @@ export default function Index() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex items-start justify-center p-4 pt-8">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <motion.div layout className="bg-card rounded-3xl shadow-sm border border-border overflow-hidden">
           <AnimatePresence mode="wait">
@@ -35,14 +35,15 @@ export default function Index() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                {/* Profile Header */}
-                <div className="p-6 pb-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-foreground to-muted-foreground flex items-center justify-center">
-                      <User className="w-8 h-8 text-primary-foreground" />
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center ml-auto">
-                      <CheckCircle2 className="w-5 h-5 text-muted-foreground" />
+                <div className="p-6 pb-4 flex flex-col items-center text-center">
+                  <div className="relative mb-3">
+                    <img
+                      src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/9ce85a0a-900a-4f90-aa08-2f38c38d280d.jpg"
+                      alt="Michel Samah"
+                      className="w-24 h-24 rounded-full object-cover"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-foreground flex items-center justify-center border-2 border-card">
+                      <CheckCircle2 className="w-4 h-4 text-primary-foreground" />
                     </div>
                   </div>
                   <h1 className="text-xl font-bold text-foreground">Michel Samah</h1>
@@ -52,17 +53,17 @@ export default function Index() {
                   <div className="flex items-center gap-4 mt-4 text-center">
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">26</p>
-                      <p className="text-xs text-muted-foreground">Abonnements</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnements</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">10K</p>
-                      <p className="text-xs text-muted-foreground">Abonnés</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Abonnés</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">32.5K</p>
-                      <p className="text-xs text-muted-foreground">J'aime</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">J'aime</p>
                     </div>
                   </div>
                 </div>
