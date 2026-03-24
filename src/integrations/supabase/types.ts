@@ -40,6 +40,8 @@ export type Database = {
           created_at: string
           has_commented: boolean
           has_liked: boolean
+          has_reposted: boolean
+          has_shared: boolean
           id: number
           is_subscribed: boolean
           name: string
@@ -51,6 +53,8 @@ export type Database = {
           created_at?: string
           has_commented?: boolean
           has_liked?: boolean
+          has_reposted?: boolean
+          has_shared?: boolean
           id?: never
           is_subscribed?: boolean
           name?: string
@@ -62,6 +66,8 @@ export type Database = {
           created_at?: string
           has_commented?: boolean
           has_liked?: boolean
+          has_reposted?: boolean
+          has_shared?: boolean
           id?: never
           is_subscribed?: boolean
           name?: string
