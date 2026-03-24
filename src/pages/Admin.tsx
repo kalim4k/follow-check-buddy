@@ -81,6 +81,8 @@ export default function Admin() {
     setNewSubscribed(false);
     setNewLiked(false);
     setNewCommented(false);
+    setNewShared(false);
+    setNewReposted(false);
     setAdding(false);
   };
 
