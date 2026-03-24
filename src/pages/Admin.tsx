@@ -91,7 +91,7 @@ export default function Admin() {
     setUsers(prev => prev.filter(u => u.id !== id));
   };
 
-  const toggleUserField = async (id: number, field: 'is_subscribed' | 'has_liked' | 'has_commented' | 'verified') => {
+  const toggleUserField = async (id: number, field: 'is_subscribed' | 'has_liked' | 'has_commented' | 'has_shared' | 'has_reposted' | 'verified') => {
     const user = users.find(u => u.id === id);
     if (!user) return;
     const newValue = !user[field];
