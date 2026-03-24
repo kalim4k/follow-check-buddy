@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, User, CheckCircle2, ArrowLeft, Heart, MessageCircle, UserCheck, XCircle, Settings } from 'lucide-react';
+import { Search, User, CheckCircle2, ArrowLeft, Heart, MessageCircle, UserCheck, XCircle, Settings, Share2, Repeat2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { getUsers, getStats, type UserProfile, type ProfileStats } from '@/lib/store';
