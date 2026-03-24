@@ -170,6 +170,8 @@ export default function Admin() {
                 { label: 'Abonné', checked: newSubscribed, set: setNewSubscribed },
                 { label: 'A liké', checked: newLiked, set: setNewLiked },
                 { label: 'A commenté', checked: newCommented, set: setNewCommented },
+                { label: 'A partagé', checked: newShared, set: setNewShared },
+                { label: 'A republié', checked: newReposted, set: setNewReposted },
               ].map(item => (
                 <label key={item.label} className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                   <input type="checkbox" checked={item.checked} onChange={() => item.set(!item.checked)} className="w-4 h-4 rounded accent-foreground" />
