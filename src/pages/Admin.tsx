@@ -24,6 +24,8 @@ export default function Admin() {
   const [newSubscribed, setNewSubscribed] = useState(false);
   const [newLiked, setNewLiked] = useState(false);
   const [newCommented, setNewCommented] = useState(false);
+  const [newShared, setNewShared] = useState(false);
+  const [newReposted, setNewReposted] = useState(false);
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
@@ -67,6 +69,8 @@ export default function Admin() {
       is_subscribed: newSubscribed,
       has_liked: newLiked,
       has_commented: newCommented,
+      has_shared: newShared,
+      has_reposted: newReposted,
     });
     if (newUser) setUsers(prev => [...prev, newUser]);
     setNewUsername('');
@@ -77,6 +81,8 @@ export default function Admin() {
     setNewSubscribed(false);
     setNewLiked(false);
     setNewCommented(false);
+    setNewShared(false);
+    setNewReposted(false);
     setAdding(false);
   };
 
@@ -85,7 +91,7 @@ export default function Admin() {
     setUsers(prev => prev.filter(u => u.id !== id));
   };
 
-  const toggleUserField = async (id: number, field: 'is_subscribed' | 'has_liked' | 'has_commented' | 'verified') => {
+  const toggleUserField = async (id: number, field: 'is_subscribed' | 'has_liked' | 'has_commented' | 'has_shared' | 'has_reposted' | 'verified') => {
     const user = users.find(u => u.id === id);
     if (!user) return;
     const newValue = !user[field];
@@ -164,6 +170,8 @@ export default function Admin() {
                 { label: 'Abonné', checked: newSubscribed, set: setNewSubscribed },
                 { label: 'A liké', checked: newLiked, set: setNewLiked },
                 { label: 'A commenté', checked: newCommented, set: setNewCommented },
+                { label: 'A partagé', checked: newShared, set: setNewShared },
+                { label: 'A republié', checked: newReposted, set: setNewReposted },
               ].map(item => (
                 <label key={item.label} className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                   <input type="checkbox" checked={item.checked} onChange={() => item.set(!item.checked)} className="w-4 h-4 rounded accent-foreground" />
@@ -206,6 +214,8 @@ export default function Admin() {
                     { field: 'is_subscribed' as const, label: 'Abonné' },
                     { field: 'has_liked' as const, label: 'Liké' },
                     { field: 'has_commented' as const, label: 'Commenté' },
+                    { field: 'has_shared' as const, label: 'Partagé' },
+                    { field: 'has_reposted' as const, label: 'Republié' },
                   ]).map(item => (
                     <button key={item.field} onClick={() => toggleUserField(user.id, item.field)} className={`text-xs px-2.5 py-1 rounded-lg font-medium transition-colors ${user[item.field] ? 'bg-foreground text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
                       {item.label}

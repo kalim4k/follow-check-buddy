@@ -9,6 +9,8 @@ export interface UserProfile {
   is_subscribed: boolean;
   has_liked: boolean;
   has_commented: boolean;
+  has_shared: boolean;
+  has_reposted: boolean;
 }
 
 export interface ProfileStats {
