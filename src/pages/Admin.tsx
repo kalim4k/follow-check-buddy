@@ -24,6 +24,8 @@ export default function Admin() {
   const [newSubscribed, setNewSubscribed] = useState(false);
   const [newLiked, setNewLiked] = useState(false);
   const [newCommented, setNewCommented] = useState(false);
+  const [newShared, setNewShared] = useState(false);
+  const [newReposted, setNewReposted] = useState(false);
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
