@@ -69,6 +69,8 @@ export default function Admin() {
       is_subscribed: newSubscribed,
       has_liked: newLiked,
       has_commented: newCommented,
+      has_shared: newShared,
+      has_reposted: newReposted,
     });
     if (newUser) setUsers(prev => [...prev, newUser]);
     setNewUsername('');
