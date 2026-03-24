@@ -223,6 +223,40 @@ export default function Index() {
                         <XCircle className="w-6 h-6 text-destructive" />
                       )}
                     </div>
+
+                    <div className="flex items-center justify-between p-3 bg-card rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                          <Share2 className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground">Partage</p>
+                          <p className="text-xs text-muted-foreground">A partagé la vidéo</p>
+                        </div>
+                      </div>
+                      {selectedUser.has_shared ? (
+                        <CheckCircle2 className="w-6 h-6 text-success" />
+                      ) : (
+                        <XCircle className="w-6 h-6 text-destructive" />
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-card rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                          <Repeat2 className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground">Republication</p>
+                          <p className="text-xs text-muted-foreground">A republié la vidéo</p>
+                        </div>
+                      </div>
+                      {selectedUser.has_reposted ? (
+                        <CheckCircle2 className="w-6 h-6 text-success" />
+                      ) : (
+                        <XCircle className="w-6 h-6 text-destructive" />
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>

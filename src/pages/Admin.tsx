@@ -214,6 +214,8 @@ export default function Admin() {
                     { field: 'is_subscribed' as const, label: 'Abonné' },
                     { field: 'has_liked' as const, label: 'Liké' },
                     { field: 'has_commented' as const, label: 'Commenté' },
+                    { field: 'has_shared' as const, label: 'Partagé' },
+                    { field: 'has_reposted' as const, label: 'Republié' },
                   ]).map(item => (
                     <button key={item.field} onClick={() => toggleUserField(user.id, item.field)} className={`text-xs px-2.5 py-1 rounded-lg font-medium transition-colors ${user[item.field] ? 'bg-foreground text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
                       {item.label}
